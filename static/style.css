@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.header-hero {
+    background-color: #222;
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+    
+    /* Caminho da imagem (verifique se 'logo_00100113.jpg' está na pasta static/) */
+    background-image: url('logo_000100113.jpg'); 
+    
+    /* MUDANÇA AQUI: de 'contain' para 'cover' */
+    background-size: cover; 
+    
+    background-repeat: no-repeat;
+    /* MUDANÇA AQUI: Centralizar a imagem */
+    background-position: center center; 
+    
+    position: relative;
+    height: 350px; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* MUDANÇA AQUI: Ajuste a opacidade para equilibrar com o logo esticado */
+    background: rgba(0, 0, 0, 0.4); /* Experimente 0.3, 0.4, 0.5... */
+    z-index: 1;
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 30px;
+}
+
+/* O restante do CSS permanece o mesmo */
+.header-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+.header-icon::before {
+    content: '✂';
+    font-size: 60px;
+    line-height: 1;
+    display: block;
+}
+
+.header-hero h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.header-hero p {
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+    color: #ccc;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    padding: 50px 20px;
+    max-width: 1200px;
+    margin: -80px auto 50px auto;
+    position: relative;
+    z-index: 3;
+}
+
+.service-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-height: 200px;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-icon {
+    background-color: #333;
+    color: white;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+}
+.card-icon::before {
+    content: '✂';
+    font-size: 28px;
+    line-height: 1;
+}
+
+.card-price {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+}
+
+.service-card h3 {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+    font-weight: 600;
+}
+
+.service-card p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.service-meta {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #888;
+    margin-top: 15px;
+}
+
+.service-meta span {
+    margin-left: 5px;
+}
+
+.service-meta::before {
+    content: '⏱';
+    margin-right: 5px;
+}
+
+@media (max-width: 768px) {
+    .header-hero {
+        padding: 60px 15px;
+        height: 300px;
+    }
+    .services-grid {
+        grid-template-columns: 1fr;
+        padding: 30px 15px;
+        margin-top: -60px;
+    }
+}

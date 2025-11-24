@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do Cliente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Bem-vindo, {{ nome }}!</h1>
+
+    <h3>O que você deseja fazer?</h3>
+
+    <a href="/servicos">FAÇA PARTE DO CLUBE MEU PATRÃO</a><br><br>
+    <a href="/agendar">Agendar horário</a><br><br>
+    <a href="/logout">Sair</a>
+</body>
+</html>
