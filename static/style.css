@@ -1,26 +1,29 @@
+/* ======================================= */
+/* 1. CONFIGURAÇÃO BASE E FONTES           */
+/* ======================================= */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 body {
     font-family: 'Poppins', Arial, sans-serif;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #f5f5f5; /* Cor de fundo unificada e mais clara */
     color: #333;
+    line-height: 1.6;
 }
 
+/* ======================================= */
+/* 2. ESTILOS DO HEADER (PÁGINA DE SERVIÇOS) */
+/* ======================================= */
 .header-hero {
     background-color: #222;
     color: white;
     padding: 80px 20px;
     text-align: center;
     
-    /* Caminho da imagem (verifique se 'logo_00100113.jpg' está na pasta static/) */
+    /* Configuração da Imagem de Fundo (mantido) */
     background-image: url('logo_000100113.jpg'); 
-    
-    /* MUDANÇA AQUI: de 'contain' para 'cover' */
     background-size: cover; 
-    
     background-repeat: no-repeat;
-    /* MUDANÇA AQUI: Centralizar a imagem */
     background-position: center center; 
     
     position: relative;
@@ -38,8 +41,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /* MUDANÇA AQUI: Ajuste a opacidade para equilibrar com o logo esticado */
-    background: rgba(0, 0, 0, 0.4); /* Experimente 0.3, 0.4, 0.5... */
+    /* Ajuste de opacidade para visibilidade do texto */
+    background: rgba(0, 0, 0, 0.4); 
     z-index: 1;
 }
 
@@ -47,13 +50,6 @@ body {
     position: relative;
     z-index: 2;
     padding-bottom: 30px;
-}
-
-/* O restante do CSS permanece o mesmo */
-.header-icon {
-    font-size: 50px;
-    margin-bottom: 15px;
-    display: inline-block;
 }
 
 .header-icon::before {
@@ -73,9 +69,12 @@ body {
     font-size: 18px;
     max-width: 600px;
     margin: 0 auto;
-    line-height: 1.6;
     color: #ccc;
 }
+
+/* ======================================= */
+/* 3. ESTILOS DO GRID DE SERVIÇOS          */
+/* ======================================= */
 
 .services-grid {
     display: grid;
@@ -125,6 +124,7 @@ body {
     width: 45px;
     height: 45px;
 }
+
 .card-icon::before {
     content: '✂';
     font-size: 28px;
@@ -158,14 +158,244 @@ body {
     margin-top: 15px;
 }
 
-.service-meta span {
-    margin-left: 5px;
-}
-
 .service-meta::before {
     content: '⏱';
     margin-right: 5px;
 }
+
+/* ======================================= */
+/* 4. ESTILOS DA PÁGINA DE AGENDAMENTO (FINALIZAR.HTML) */
+/* ======================================= */
+
+.container-finalizar {
+    width: 100%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 30px auto;
+}
+
+.container-finalizar h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Estilo para todos os cards na página de finalizar */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Serviço Selecionado (Topo) */
+.service-summary {
+    /* Mantido o estilo de card geral */
+}
+
+.service-details-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-info {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.service-info .icon-service {
+    margin-right: 10px;
+    font-size: 1.5em; /* Ícone um pouco maior */
+}
+
+.service-details-row .price {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #000; 
+}
+
+
+/* Seleção de Data e Horário */
+.time-title {
+    font-size: 1em;
+    color: #555;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.date-selection-grid {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 10px; 
+}
+
+.date-button {
+    flex-shrink: 0; 
+    width: 60px;
+    height: 65px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #f9f9f9;
+}
+
+.date-button:hover {
+    border-color: #333;
+}
+
+.date-button.selected {
+    background-color: #000; 
+    color: #fff;
+    border-color: #000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.day-of-week {
+    display: block;
+    font-size: 0.8em;
+    margin-bottom: 4px;
+}
+
+.day-number {
+    display: block;
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+.time-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+}
+
+.time-slot {
+    padding: 10px 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    background-color: #f9f9f9;
+    font-weight: 400;
+}
+
+.time-slot:hover {
+    border-color: #333;
+}
+
+.time-slot.selected {
+    background-color: #000; 
+    color: #fff;
+    border-color: #000;
+}
+
+/* Forma de Pagamento */
+.payment-options-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.payment-card {
+    flex: 1; 
+    min-width: 150px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #fff;
+    position: relative;
+    overflow: hidden; 
+}
+
+.payment-card:hover {
+    border-color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.payment-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.payment-card.selected {
+    border-color: #000; 
+    background-color: #f0f0f0;
+    box-shadow: 0 0 0 2px #000; 
+}
+
+.payment-icon {
+    font-size: 2em;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.payment-card h4 {
+    margin: 5px 0 0px 0;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #333;
+}
+
+.payment-card p {
+    margin: 5px 0 0 0;
+    font-size: 0.8em;
+    color: #777;
+}
+
+/* Botão de Submissão */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #333;
+}
+
+.cancellation-info {
+    text-align: center;
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 15px;
+}
+
+/* ======================================= */
+/* 5. MEDIA QUERIES (RESPONSIVIDADE)       */
+/* ======================================= */
 
 @media (max-width: 768px) {
     .header-hero {
@@ -176,5 +406,19 @@ body {
         grid-template-columns: 1fr;
         padding: 30px 15px;
         margin-top: -60px;
+    }
+    
+    .container-finalizar {
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .payment-options-grid {
+        flex-direction: column; /* Coloca os cartões de pagamento em coluna em telas pequenas */
+        gap: 10px;
+    }
+
+    .payment-card {
+        min-width: 100%;
     }
 }

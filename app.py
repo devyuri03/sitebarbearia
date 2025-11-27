@@ -23,6 +23,7 @@ def criar_tabelas():
         """)
 
         # Tabela de agendamentos
+        # Corrigido: Certificando que 'pagamento' está na declaração da tabela
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS agendamentos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,10 +31,11 @@ def criar_tabelas():
             data TEXT NOT NULL,
             horario TEXT NOT NULL,
             servico TEXT NOT NULL,
+            pagamento TEXT, -- Coluna adicionada para guardar a forma de pagamento
             FOREIGN KEY(cliente_id) REFERENCES clientes(id)
         )
         """)
-
+        
     print("Tabelas criadas com sucesso!")
 
 
@@ -124,6 +126,42 @@ def agendar():
         return "Agendamento realizado com sucesso!"
 
     return render_template("agendar.html")
+
+
+@app.route("/finalizar", methods=["GET", "POST"])
+def finalizar():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    
+    if request.method == "POST":
+        # Lógica para processar o formulário POST (salvar agendamento)
+        data = request.form["data-agendamento"]
+        horario = request.form["hora-agendamento"]
+        pagamento = request.form["tipo-pagamento"]
+        servico = request.form["servico-nome"]
+        
+        try:
+            with sqlite3.connect("barbearia.db") as conn:
+                cursor = conn.cursor()
+                
+                # CORREÇÃO 1: Adicionado 'pagamento' à lista de colunas e valores
+                cursor.execute("""
+                    INSERT INTO agendamentos (cliente_id, data, horario, servico, pagamento)
+                    VALUES (?, ?, ?, ?, ?)
+                    """, (session["user_id"], data, horario, servico, pagamento))
+                conn.commit()  
+            
+            # CORREÇÃO 2: Redirecionado após sucesso, melhor que retornar uma string
+            return redirect(url_for("cliente")) 
+        except Exception as e:
+            # Tratamento básico de erro para depuração
+            return f"Erro ao agendar: {e}", 500
+    
+    # Lógica para o método GET (mostrar a tela de finalização)
+    # CORREÇÃO 3: Removida a indentação incorreta. 
+    # Este bloco só será executado se request.method != "POST"
+    servico_selecionado = request.args.get("servico")  
+    return render_template("finalizar.html", servico_url=servico_selecionado)
 
 
 @app.route("/cliente")

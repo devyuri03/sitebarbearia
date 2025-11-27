@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Agendamento | Barber Shop</title>
+    
+    <link rel="stylesheet" href="style_finalizar.css"> 
+</head>
+<body>
+
+    <div class="container-finalizar">
+        <h1>💈 Finalizar Agendamento</h1>
+
+        <div class="card service-summary">
+            <h3 class="card-title">Serviço Selecionado</h3>
+            <div class="service-details-row">
+                <div class="service-info">
+                    <span class="icon-service">✂️</span>
+                    <span id="service-name-time">Corte + Barba - 50 min</span> 
+                </div>
+                <span id="service-price" class="price">R$ 70,00</span>
+            </div>
+        </div>
+        
+        <form id="agendamento-form" action="/finalizar" method="POST">
+
+            <input type="hidden" id="servico-hidden" name="servico-nome">
+            <input type="hidden" id="data-agendamento-hidden" name="data-agendamento" required>
+            <input type="hidden" id="hora-agendamento-hidden" name="hora-agendamento" required>
+
+            <div class="card step-section">
+                <h3 class="card-title">📅 Escolha a Data e Horário</h3>
+                
+                <div class="date-selection-grid">
+                    <div class="date-button selected" data-date="2025-11-27">
+                        <span class="day-of-week">Qui</span>
+                        <span class="day-number">27</span>
+                    </div>
+                    <div class="date-button" data-date="2025-11-28">
+                        <span class="day-of-week">Sex</span>
+                        <span class="day-number">28</span>
+                    </div>
+                    </div>
+
+                <h4 class="time-title">Selecione o Horário</h4>
+                <div class="time-selection-grid">
+                    <div class="time-slot" data-time="09:00">09:00</div>
+                    <div class="time-slot" data-time="09:30">09:30</div>
+                    <div class="time-slot" data-time="10:00">10:00</div>
+                    <div class="time-slot" data-time="10:30">10:30</div>
+                    <div class="time-slot" data-time="11:00">11:00</div>
+                    <div class="time-slot" data-time="11:30">11:30</div>
+                    <div class="time-slot" data-time="12:00">12:00</div>
+                    <div class="time-slot" data-time="12:30">12:30</div>
+                    <div class="time-slot" data-time="14:00">14:00</div>
+                    <div class="time-slot" data-time="14:30">14:30</div>
+                    <div class="time-slot" data-time="15:00">15:00</div>
+                    <div class="time-slot" data-time="15:30">15:30</div>
+                    <div class="time-slot" data-time="16:00">16:00</div>
+                    <div class="time-slot" data-time="16:30">16:30</div>
+                    <div class="time-slot" data-time="17:00">17:00</div>
+                    <div class="time-slot" data-time="17:30">17:30</div>
+                    <div class="time-slot" data-time="18:00">18:00</div>
+                    <div class="time-slot" data-time="18:30">18:30</div>
+                    <div class="time-slot" data-time="19:00">19:00</div>
+                    <div class="time-slot" data-time="19:30">19:30</div>
+                </div>
+            </div>
+
+            <div class="card step-section">
+                <h3 class="card-title">💳 Forma de Pagamento</h3>
+                <div class="payment-options-grid">
+                    
+                    <label for="pagamento-cartao" class="payment-card">
+                        <input type="radio" id="pagamento-cartao" name="tipo-pagamento" value="cartao" required>
+                        <div class="payment-content">
+                            <span class="payment-icon">💳</span>
+                            <h4>Cartão de Crédito/Débito</h4>
+                            <p>Pague na hora do atendimento</p>
+                        </div>
+                    </label>
+                    
+                    <label for="pagamento-pix" class="payment-card">
+                        <input type="radio" id="pagamento-pix" name="tipo-pagamento" value="pix">
+                        <div class="payment-content">
+                            <span class="payment-icon">📱</span>
+                            <h4>PIX</h4>
+                            <p>Pagamento instantâneo</p>
+                        </div>
+                    </label>
+                    
+                    <label for="pagamento-dinheiro" class="payment-card">
+                        <input type="radio" id="pagamento-dinheiro" name="tipo-pagamento" value="dinheiro">
+                        <div class="payment-content">
+                            <span class="payment-icon">💵</span>
+                            <h4>Dinheiro</h4>
+                            <p>Pagar na loja</p>
+                        </div>
+                    </label>
+
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">CONFIRMAR AGENDAMENTO</button>
+            <p class="cancellation-info">Cancelamentos devem ser feitos com até 2 horas de antecedência</p>
+
+        </form>
+    </div>
+
+    <script>
+        // Mapeamento de serviços para formatar nome, tempo e preço (adicione mais conforme seus serviços)
+        const SERVICES_DATA = {
+            'corte-tradicional': { name: 'Corte Tradicional', time: '30 min', price: 'R$ 45,00' },
+            'corte-barba': { name: 'Corte + Barba', time: '50 min', price: 'R$ 70,00' },
+            'barba-completa': { name: 'Barba Completa', time: '25 min', price: 'R$ 40,00' },
+            // ... adicione o restante dos seus serviços
+        };
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const servicoParam = urlParams.get('servico'); 
+            
+            const serviceData = SERVICES_DATA[servicoParam] || { name: 'Serviço Desconhecido', time: '?? min', price: 'R$ 0,00' };
+            
+            // 1. Preenche a seção de resumo do serviço
+            document.getElementById('service-name-time').textContent = `${serviceData.name} - ${serviceData.time}`;
+            document.getElementById('service-price').textContent = serviceData.price;
+            document.getElementById('servico-hidden').value = servicoParam; // Envia o slug (ex: corte-barba)
+
+            // --- LÓGICA DE INTERAÇÃO COM BOTÕES ---
+
+            // 2. Seleção de Data
+            const dateButtons = document.querySelectorAll('.date-button');
+            const dataHiddenInput = document.getElementById('data-agendamento-hidden');
+
+            dateButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove a classe 'selected' de todos os botões de data
+                    dateButtons.forEach(btn => btn.classList.remove('selected'));
+                    
+                    // Adiciona a classe 'selected' ao botão clicado
+                    button.classList.add('selected');
+                    
+                    // Atualiza o input hidden
+                    dataHiddenInput.value = button.getAttribute('data-date');
+                });
+            });
+            
+            // Inicializa o valor da data com o primeiro botão, se houver
+            if(dateButtons.length > 0) {
+                 dataHiddenInput.value = dateButtons[0].getAttribute('data-date');
+            }
+
+
+            // 3. Seleção de Horário
+            const timeSlots = document.querySelectorAll('.time-slot');
+            const timeHiddenInput = document.getElementById('hora-agendamento-hidden');
+
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', () => {
+                    // Remove a classe 'selected' de todos os slots de horário
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    
+                    // Adiciona a classe 'selected' ao slot clicado
+                    slot.classList.add('selected');
+                    
+                    // Atualiza o input hidden
+                    timeHiddenInput.value = slot.getAttribute('data-time');
+                });
+            });
+
+            // 4. Seleção de Pagamento
+            const paymentCards = document.querySelectorAll('.payment-card');
+            
+            paymentCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Remove a classe 'selected' de todos os cartões de pagamento
+                    paymentCards.forEach(c => c.classList.remove('selected'));
+                    
+                    // Adiciona a classe 'selected' ao cartão clicado (label)
+                    card.classList.add('selected');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
