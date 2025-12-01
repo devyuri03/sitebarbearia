@@ -160,7 +160,7 @@ def finalizar():
     # Lógica para o método GET (mostrar a tela de finalização)
     # CORREÇÃO 3: Removida a indentação incorreta. 
     # Este bloco só será executado se request.method != "POST"
-    servico_selecionado = request.args.get("servico")  
+    servico_selecionado = request.args.get("servico")
     return render_template("finalizar.html", servico_url=servico_selecionado)
 
 

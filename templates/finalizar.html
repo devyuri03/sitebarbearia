@@ -5,7 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finalizar Agendamento | Barber Shop</title>
     
-    <link rel="stylesheet" href="style_finalizar.css"> 
+    <link rel="stylesheet" href="../static/style.css"> 
+    
+    <style>
+        /* Apenas um CSS básico para ilustrar a seleção, se o style.css não carregar */
+        .date-button, .time-slot, .payment-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+        .date-button.selected, .time-slot.selected, .payment-card.selected {
+            background-color: #000;
+            color: #fff;
+            border-color: #000;
+            font-weight: bold;
+        }
+        .date-selection-grid, .time-selection-grid, .payment-options-grid {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            margin-bottom: 20px;
+        }
+        .container-finalizar {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
@@ -33,14 +79,6 @@
                 <h3 class="card-title">📅 Escolha a Data e Horário</h3>
                 
                 <div class="date-selection-grid">
-                    <div class="date-button selected" data-date="2025-11-27">
-                        <span class="day-of-week">Qui</span>
-                        <span class="day-number">27</span>
-                    </div>
-                    <div class="date-button" data-date="2025-11-28">
-                        <span class="day-of-week">Sex</span>
-                        <span class="day-number">28</span>
-                    </div>
                     </div>
 
                 <h4 class="time-title">Selecione o Horário</h4>
@@ -117,8 +155,54 @@
             // ... adicione o restante dos seus serviços
         };
 
+        // Nomes dos dias da semana em português
+        const DAYS_OF_WEEK = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+        /**
+         * Gera e renderiza os botões de data no grid, pulando os domingos.
+         * @param {number} numDays - O número de dias úteis (não-domingos) a gerar.
+         */
+        function generateDateButtons(numDays = 7) {
+            const dateGrid = document.querySelector('.date-selection-grid');
+            dateGrid.innerHTML = ''; // Limpa o conteúdo existente
+
+            let currentDate = new Date();
+            let datesGenerated = 0;
+
+            while (datesGenerated < numDays) {
+                const dayOfWeek = currentDate.getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
+
+                // Pula o domingo (0)
+                if (dayOfWeek !== 0) {
+                    // Formatação para o valor data-date (AAAA-MM-DD)
+                    const year = currentDate.getFullYear();
+                    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Mês é 0-indexado
+                    const day = String(currentDate.getDate()).padStart(2, '0');
+                    const dateString = `${year}-${month}-${day}`;
+
+                    // Cria o botão
+                    const button = document.createElement('div');
+                    button.classList.add('date-button');
+                    button.setAttribute('data-date', dateString);
+
+                    // Adiciona o conteúdo (Dia da Semana e Número)
+                    button.innerHTML = `
+                        <span class="day-of-week">${DAYS_OF_WEEK[dayOfWeek]}</span>
+                        <span class="day-number">${currentDate.getDate()}</span>
+                    `;
+
+                    dateGrid.appendChild(button);
+                    datesGenerated++;
+                }
+
+                // Avança para o próximo dia
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+        }
+        
         document.addEventListener('DOMContentLoaded', (event) => {
             const urlParams = new URLSearchParams(window.location.search);
+            // Assumindo que você passa o slug do serviço via URL (ex: /finalizar?servico=corte-barba)
             const servicoParam = urlParams.get('servico'); 
             
             const serviceData = SERVICES_DATA[servicoParam] || { name: 'Serviço Desconhecido', time: '?? min', price: 'R$ 0,00' };
@@ -126,15 +210,25 @@
             // 1. Preenche a seção de resumo do serviço
             document.getElementById('service-name-time').textContent = `${serviceData.name} - ${serviceData.time}`;
             document.getElementById('service-price').textContent = serviceData.price;
-            document.getElementById('servico-hidden').value = servicoParam; // Envia o slug (ex: corte-barba)
+            document.getElementById('servico-hidden').value = servicoParam; // Envia o slug
+
+            // 2. Gera e renderiza os botões de data
+            // Você pode alterar o número (7) para gerar mais ou menos dias úteis
+            generateDateButtons(10); 
 
             // --- LÓGICA DE INTERAÇÃO COM BOTÕES ---
 
-            // 2. Seleção de Data
-            const dateButtons = document.querySelectorAll('.date-button');
+            // 3. Seleção de Data
             const dataHiddenInput = document.getElementById('data-agendamento-hidden');
+            let dateButtons = document.querySelectorAll('.date-button'); // Pega os novos botões
 
-            dateButtons.forEach(button => {
+            dateButtons.forEach((button, index) => {
+                // Seleciona o primeiro botão gerado por padrão e preenche o hidden input
+                if (index === 0) {
+                    button.classList.add('selected');
+                    dataHiddenInput.value = button.getAttribute('data-date');
+                }
+
                 button.addEventListener('click', () => {
                     // Remove a classe 'selected' de todos os botões de data
                     dateButtons.forEach(btn => btn.classList.remove('selected'));
@@ -147,13 +241,7 @@
                 });
             });
             
-            // Inicializa o valor da data com o primeiro botão, se houver
-            if(dateButtons.length > 0) {
-                 dataHiddenInput.value = dateButtons[0].getAttribute('data-date');
-            }
-
-
-            // 3. Seleção de Horário
+            // 4. Seleção de Horário
             const timeSlots = document.querySelectorAll('.time-slot');
             const timeHiddenInput = document.getElementById('hora-agendamento-hidden');
 
@@ -170,11 +258,17 @@
                 });
             });
 
-            // 4. Seleção de Pagamento
+            // 5. Seleção de Pagamento
             const paymentCards = document.querySelectorAll('.payment-card');
             
             paymentCards.forEach(card => {
-                card.addEventListener('click', () => {
+                card.addEventListener('click', (e) => {
+                    // Garante que o clique na label marque o radio e o estilo
+                    const radio = card.querySelector('input[type="radio"]');
+                    if (radio) {
+                        radio.checked = true;
+                    }
+                    
                     // Remove a classe 'selected' de todos os cartões de pagamento
                     paymentCards.forEach(c => c.classList.remove('selected'));
                     
